@@ -1,0 +1,31 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    block content
+    script(src="/socket.io/socket.io.js")
+    script.
+      var socket = io();
+
+      //- var names = ["Tom", "Bob"]
+      //- debugger;
+
+      socket.emit('user:login', { userName: "Tom"})
+
+      socket.on('user:location:query', function () {
+        console.log('user:location:query')
+        socket.emit('user:location', {location: ['1', '2'], userName: 'Tom'})
+      })
+
+      socket.on('user:location:result', function (data) {
+        console.log('user:location:result');
+        console.log(data);
+      });
+
+      socket.on('connection', function () {
+        console.log('connected');
+        socket.emit('user:login', {name: "Tom"})
+      });
+
